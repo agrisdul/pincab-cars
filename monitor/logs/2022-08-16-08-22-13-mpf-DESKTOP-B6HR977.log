@@ -1,0 +1,5 @@
+2022-08-16 08:22:13,635 : INFO : root : Loading config.
+2022-08-16 08:22:13,638 : INFO : YamlMultifileConfigLoader : Machine config file #1: config.yaml
+2022-08-16 08:22:13,638 : INFO : ConfigProcessor : Loading config from file c:\users\pin\appdata\local\programs\python\python37\lib\site-packages\mpf\mpfconfig.yaml.
+2022-08-16 08:22:13,709 : INFO : ConfigProcessor : Loading config: c:\users\pin\appdata\local\programs\python\python37\lib\site-packages\mpf\mpfconfig.yaml
+2022-08-16 08:22:13,710 : INFO : ConfigProcessor : Loading config from file c:\ag\monitor\config\config.yaml.
