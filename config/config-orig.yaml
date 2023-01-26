@@ -1,0 +1,186 @@
+#config_version=5
+
+hardware:
+    platform: opp, virtual
+    driverboards: gen2
+opp:
+  ports: COM3, COM4
+
+
+playfields:
+    playfield:
+        tags: default
+        default_source_device: bd_plunger #parada no kurienes tiek sanemtas bumbas laukuma
+
+modes: 
+    -  base
+    
+
+switches: 
+    s_p2_flipper_left:
+        number:
+        tags: left_flipper
+        type: NC #normal_close
+    s_p2_flipper_right:
+        number:
+        tags: right_flipper
+        type: NC
+    s_flipper_left:
+        number:
+        tags: left_flipper #norada uz flipperiem. prieks kombo utml
+        type: NC
+    s_flipper_right:
+        number:
+        tags: right_flipper
+        type: NC
+    s_trough1:
+        number: 2
+        type: NC
+    s_trough2:
+        number: 3
+        type: NC
+    s_trough_jam:
+        number: 4
+        type: NC   
+    s_plunger:
+        number: 5
+    s_start:
+        number: 6
+        tags: start #ipasa poga, saka mpf un attarck mode ka start
+    s_right_inlane: 
+        number: 7
+        tags: playfield_active #parada mpf ka bumba ir cela uz laukumu.
+    s_sling_left:
+        number: 8
+    s_sling_right:
+        number: 9
+
+
+coils: 
+    c_p2_flipper_left_main:
+        number:
+        default_pulse_ms: 20
+    c_p2_flipper_left_hold:
+        number:
+        allow_enable: true
+    c_p2_flipper_right_main:
+        number:
+        default_pulse_ms: 20
+    c_p2_flipper_right_hold:
+        number:
+        allow_enable: true
+    c_flipper_left_main:
+        number:
+        default_pulse_ms: 20 #default ir 10 bet te var testet, lai nesedeg pie 48 voltiem 30 ir max 
+    c_flipper_left_hold:
+        number:
+        allow_enable: true
+    c_flipper_right_main:
+        number:
+        default_pulse_ms: 20
+    c_flipper_right_hold:
+        number:
+        allow_enable: true
+    c_trough_eject:
+        number: 5
+        default_pulse_ms: 20
+    c_sling_left:
+        number: 6
+    c_sling_right:
+        number: 7
+
+autofire_coils: 
+    ac_sling_left:
+        switch: s_sling_left
+        coil: c_sling_left
+    ac_sling_right: 
+        switch: s_sling_right
+        coil: c_sling_right
+
+ball_devices:
+    bd_trough: 
+        ball_switches: s_trough1, s_trough2
+        jam_switch: s_trough_jam
+        eject_coil: c_trough_eject
+        tags: drain, home, trough #parada, ka bumba pazud, gaida kad tiks izssaukta, un palaiz bumbu
+        eject_targets: bd_plunger
+        eject_timeouts: 3s
+    bd_plunger: 
+        ball_switches: s_plunger
+        mechanical_eject: true 
+        eject_targets: playfield  
+        eject_timeouts: 5s 
+    
+
+flippers:
+    f_p2_flipper_left:
+        main_coil: c_p2_flipper_left_main
+        hold_coil: c_p2_flipper_left_hold
+        activation_switch: s_p2_flipper_left
+    f_flipper_left:
+        main_coil: c_flipper_left_main #koili iespedzas uz isu bridi
+        hold_coil: c_flipper_left_hold #saprot ka koilus tura ilgi
+        activation_switch: s_flipper_left
+        #enable_events: machine_reset_phase_3 #iesledz fliperus tikai pec speles sakuma
+    f_flipper_right:
+        main_coil: c_flipper_right_main
+        hold_coil: c_flipper_right_hold
+        activation_switch: s_flipper_right #aktivize flipperu (norada uz fileru piem. labais)
+        #enable_events: machine_reset_phase_3
+
+displays: 
+    window:
+        width: 800
+        height: 200
+
+slides: 
+    welcome_slide:
+        widgets: 
+            -   type: text
+                text: "Sveiks!" #var pielikt type:image un radit bildi
+                font_size: 50
+                color: blue 
+            -   type: rectangle 
+                width: 240
+                height: 60
+    attract_started:
+        widgets:
+            -   text: ATTRACT MODE
+                type: text
+
+
+
+slide_player: 
+    init_done: welcome_slide
+    mode_attract_started: attract_started
+
+
+keyboard: 
+    "x":
+        switch: s_p2_flipper_left
+    "m":
+        switch: s_p2_flipper_right    
+    "z":
+        switch: s_flipper_left
+    ".":
+        switch: s_flipper_right
+    "1":
+        switch: s_trough1
+        toggle: true #nozime,ka piespezot vienreiz aktivs, piespiez otreiz neaktivs. izmanto tikai sim un citiem switchiem 
+    "2": 
+        switch: s_trough2
+        toggle: true
+    "p":
+        switch: s_plunger
+        toggle: true
+    "s": 
+        switch: s_start 
+    "q": 
+        switch: s_right_inlane
+    "o": 
+        switch: s_sling_left
+    
+
+virtual_platform_start_active_switches:
+    -   s_trough1
+    -   s_trough2 

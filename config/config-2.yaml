@@ -1,0 +1,139 @@
+#config_version=5
+
+#CobraPin Example Config
+
+hardware:
+  platform: opp
+  driverboards: gen2
+
+
+opp:
+  #Use the USB ports defined by your OS for the two STM32 boards
+  ports: COM3,COM6
+  #USING SERIAL NUMBERS INSTEAD OF CHAINS
+  #  Board 0 has serial number 0, Board 1 has serial number 1.
+  #  This is convenient if your OS tends to reassign the serial port.
+  #  MPF will automatically address the correct board even if the ports
+  #     are swapped.
+
+  #For multiple CobraPin boards in a game, you will either have to give
+  #  the STM32 boards on the second CobraPin board new serial numbers
+  #  (10 and 11 are suggested for the 2nd board since 2 is used by the
+  #  CobraPin Xpansion Board)
+  #  <OR> Use the chains section to assign a port to a board number.
+  #  Mixing these up could cause blown FETs, coils, and fuses. Proceed
+  #  with caution. Test without coil power and use the yellow coil LEDs
+  #  for feedback.
+  #chains:
+     #0: /dev/ttyACM0
+     #1: /dev/ttyACM1
+
+
+psus:
+  default:
+    #Gives the capacitors extra time to recharge after firing a coil
+    #  and eases the load on the power supply. Doesn't affect autofire
+    #  devices like flippers, pops, slings.
+    release_wait_ms: 50
+
+
+#One giant config file can get difficult to manage. You can put any of
+#  these config sections in its own yaml file and link to it with the
+#  config section here
+config:
+  #- switches_config.yaml
+  #- lights_config.yaml
+  #- coils_config.yaml
+  # ...
+
+
+switches:
+
+  #DIRECT SWITCHES
+  #switch numbers are labelled in silkscreen on the board
+  s_left_flipper:
+    number: 3-0-24
+    tags: left_flipper
+  s_startButton:
+    number: 1-0-11
+    tags: start
+  s_left_plunger_lane:
+    number: 1-0-9
+    tags: start
+
+
+
+
+coils:
+  #coil numbers are labelled in silkscreen on the board
+
+  #There are multiple ways to configure flippers, use the one that
+  #  matches your hardware
+  c_flipper_left:
+    number: 3-0-11
+    default_hold_power: 0.125
+    default_pulse_ms: 10
+    allow_enable: true
+  c_ballRelease:
+    number: 1-0-1
+    default_pulse_ms: 30
+  c_left_plunger:
+    number: 1-0-2
+    default_pulse_ms: 10
+
+
+
+flippers:
+  left_flipper:
+    main_coil: c_flipper_left
+    activation_switch: s_left_flipper
+    enable_events: machine_reset_phase_3
+
+
+autofire_coils:
+  #Add your autofire cofigs for pops, slings, etc.
+
+
+ball_devices:
+  #Add your ball devices
+  bd_left_plunger:
+    ball_switches: s_left_plunger_lane
+    eject_coil: c_left_plunger
+
+playfields:
+  #Define your playfields
+  playfield:
+        tags: default
+        default_source_device: bd_left_plunger
+
+
+machine:
+  balls_installed: 3 #How many balls are physically in your game
+  min_balls: 3 #How few balls can be accounted for before you can start a game
+
+
+game:
+  balls_per_game: 3
+  max_players: 4
+
+
+modes:
+  #Add all your mode names here
+  #- attract
+  #- base
+  #- etc
+
+
+keyboard:   #use to drive your game from the computer for testing
+  z:
+    switch: s_left_flipper
+  "/":
+    switch: s_right_flipper
+  x:
+    switch: s_p2left_flipper
+  m:
+    switch: s_p2right_flipper
+  s: 
+    switch: s_startButton
+  p: 
+    switch: s_left_plunger_lane

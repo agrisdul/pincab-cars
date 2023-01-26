@@ -1,0 +1,440 @@
+#config_version=5
+
+#CobraPin Example Config
+
+hardware:
+  platform: opp
+  driverboards: gen2
+
+
+opp:
+  #Use the USB ports defined by your OS for the two STM32 boards
+  ports: COM3, COM4, COM6
+  #USING SERIAL NUMBERS INSTEAD OF CHAINS
+  #  Board 0 has serial number 0, Board 1 has serial number 1.
+  #  This is convenient if your OS tends to reassign the serial port.
+  #  MPF will automatically address the correct board even if the ports
+  #     are swapped.
+
+  #For multiple CobraPin boards in a game, you will either have to give
+  #  the STM32 boards on the second CobraPin board new serial numbers
+  #  (10 and 11 are suggested for the 2nd board since 2 is used by the
+  #  CobraPin Xpansion Board)
+  #  <OR> Use the chains section to assign a port to a board number.
+  #  Mixing these up could cause blown FETs, coils, and fuses. Proceed
+  #  with caution. Test without coil power and use the yellow coil LEDs
+  #  for feedback.
+  #chains:
+     #0: /dev/ttyACM0
+     #1: /dev/ttyACM1
+
+
+psus:
+  default:
+    #Gives the capacitors extra time to recharge after firing a coil
+    #  and eases the load on the power supply. Doesn't affect autofire
+    #  devices like flippers, pops, slings.
+    release_wait_ms: 50
+
+
+#One giant config file can get difficult to manage. You can put any of
+#  these config sections in its own yaml file and link to it with the
+#  config section here
+config:
+  #- switches_config.yaml
+  #- lights_config.yaml
+  #- coils_config.yaml
+  # ...
+
+
+switches:
+
+  #DIRECT SWITCHES
+  #switch numbers are labelled in silkscreen on the board
+  s_left_flipper:
+    number: 1-0-1
+    tags: left_flipper
+  s_right_flipper:
+    number: 1-0-10
+    tags: right_flipper
+  s_startButton:
+    number: 3-0-2
+    tags: start
+  s_sling_left:
+    number: 1-0-2
+  s_sling_right:
+    number: 1-0-3
+  s_right_inlane:
+    number: 1-0-8
+    tags: playfield_active
+  s_trough1:
+    number: 1-0-31
+    type: NC
+  s_trough2:
+    number: 1-0-30
+    type: NC
+  s_trough3:
+    number: 1-0-29
+    type: NC
+  s_trough4:
+    number: 1-0-28
+    type: NC
+  s_trough5:
+    number: 1-0-27
+    type: NC
+  s_trough6:
+    number: 1-0-26
+    type: NC
+  s_trough_jam:
+    number: 1-0-25
+    type: NC
+  s_drop_front:
+    number: 1-0-24
+  s_drop_middle:
+    number: 1-0-23
+  s_drop_back:
+    number: 1-0-22
+  s_drop_front1:
+    number: 1-0-21
+  s_drop_middle1:
+    number: 1-0-20
+  s_drop_back1:
+    number: 1-0-19
+  s_plunger:
+    number: 3-0-1
+  s_target1:
+    number: 1-0-11
+    debounce: quick
+    ignore_window_ms: 1000ms
+  s_target2:
+    number: 1-0-18
+    debounce: quick
+    ignore_window_ms: 1000ms
+  s_target3:
+    number: 1-0-17
+    debounce: quick
+    ignore_window_ms: 1000ms
+  s_target4:
+    number: 1-0-16
+    debounce: quick
+    ignore_window_ms: 1000ms
+  s_kickbackK2:
+    number: 3-0-3
+  s_kickbackK3:
+    number: 3-0-10
+  s_kickbackK4:
+    number: 3-0-11
+  s_kickbackS2:
+    number: 3-0-9
+  s_kickbackU2:
+    number: 3-0-31
+
+
+coils:
+  #coil numbers are labelled in silkscreen on the board
+
+  #There are multiple ways to configure flippers, use the one that
+  #  matches your hardware
+  c_flipper_left:
+    number: 1-0-6
+    default_hold_power: 0.125
+    default_pulse_ms: 26
+    allow_enable: true
+  c_flipper_right:
+    number: 1-0-5
+    default_hold_power: 0.125
+    default_pulse_ms: 26
+    allow_enable: true
+  c_drop_resetD1:
+    number: 1-0-3
+    default_pulse_ms: 10
+  c_drop_resetD2:
+    number: 1-0-0
+    default_pulse_ms: 10
+  c_trough_eject:
+    number: 1-0-2
+    default_pulse_ms: 20
+  c_sling_left:
+    number: 1-0-4
+    default_pulse_ms: 15
+  c_sling_right:
+    number: 1-0-1
+    default_pulse_ms: 15
+  c_kickbackK2:
+    number: 3-0-3
+    default_pulse_ms: 20
+  c_kickbackK3:
+    number: 3-0-6
+    default_pulse_ms: 20
+  c_kickbackK4:
+    number: 3-0-7
+    default_pulse_ms: 20
+  c_kickbackS2:
+    number: 3-0-5
+    default_pulse_ms: 20ms
+  c_kickbackU1:
+    number: 3-0-4
+    default_pulse_ms: 20
+  c_kickbackU2:
+    number: 3-0-0
+    default_pulse_ms: 20
+
+
+flippers:
+  left_flipper:
+    main_coil: c_flipper_left
+    activation_switch: s_left_flipper
+    
+  right_flipper:
+    main_coil: c_flipper_right
+    activation_switch: s_right_flipper
+    
+  
+
+drop_targets:
+  front:
+    switch: s_drop_front
+  middle:
+    switch: s_drop_middle
+  back:
+    switch: s_drop_back
+drop_target_banks:
+  vuk_bank:
+    drop_targets: front, middle, back
+    reset_coils: c_drop_resetD1
+    reset_on_complete: 1s
+
+
+autofire_coils:
+  #Add your autofire cofigs for pops, slings, etc.
+  ac_kickbackS2:
+    coil: c_kickbackS2
+    switch: s_kickbackS2
+  ac_kickbackU2:
+    coil: c_kickbackU2
+    switch: s_kickbackU2
+  ac_slingshot_left:
+    coil: c_sling_left
+    switch: s_sling_left
+  ac_slingshot_right:
+    coil: c_sling_right
+    switch: s_sling_right
+
+kickbacks:
+  kickbackK2:
+    coil:   c_kickbackK2
+    switch: s_kickbackK2
+  kickbackK3:
+    coil:   c_kickbackK3
+    switch: s_kickbackK3
+  kickbackK4:
+    coil:   c_kickbackK4
+    switch: s_kickbackK4
+
+ball_devices:
+  bd_trough:
+    ball_switches: s_trough1, s_trough2, s_trough3, s_trough4, s_trough5, s_trough6, s_trough_jam
+    eject_coil: c_trough_eject
+    tags: trough, home, drain
+    jam_switch: s_trough_jam
+    eject_coil_jam_pulse: 15ms
+    eject_targets: bd_plunger
+    eject_timeouts: 3s
+  bd_plunger:
+    ball_switches: s_plunger
+    mechanical_eject: true
+    eject_timeouts: 5s
+
+playfields:
+  #Define your playfields
+  playfield:
+        default_source_device: bd_plunger
+        tags: default
+
+
+machine:
+  balls_installed: 2 #How many balls are physically in your game
+  min_balls: 2 #How few balls can be accounted for before you can start a game
+
+
+game:
+  balls_per_game: 2
+  max_players: 2
+
+
+modes:
+  #Add all your mode names here
+  - attract
+  - base
+  #- etc
+
+assets:
+  sounds:
+    default:
+      load: on_demand
+    music:
+      track: music
+    sfx:
+      track: sfx
+    voice:
+      track: voice
+  images:
+    default:
+      load: preload
+    preload:
+      load: preload
+    on_demand:
+      load: on_demand
+    potato:
+      some_key: some_value
+      something_else: whatever
+
+machine_vars:
+  master_volume:
+    initial_value: 0.8
+
+sound_system:
+  buffer: 1024
+  channels: 1
+  enabled: true
+  frequency: 44100
+  tracks:
+    music:
+      type: standard
+      simultaneous_sounds: 1
+      volume: 0.5
+    voice:
+      type: standard
+      simultaneous_sounds: 1
+      volume: 0.7
+    sfx:
+      type: standard
+      simultaneous_sounds: 8
+      volume: 0.4
+
+sounds:
+  fons:
+    file: fons.wav
+    volume: 0.85
+  menu:
+    file: menu.flac
+    volume: 0.5
+
+lights: 
+    #NEO1 output supports 256 LEDs numbered 1-0-0 to 1-0-255
+  l_gi_1:
+    number: 1-0-0
+    subtype: led
+    tags: gi 
+  l_gi_2:
+    number: 1-0-1
+    subtype: led
+    tags: gi 
+  l_gi_3:
+    number: 1-0-2
+    subtype: led
+    tags: gi 
+  l_gi_4:
+    number: 1-0-3
+    subtype: led
+    tags: gi 
+  l_gi_5:
+    number: 1-0-4
+    subtype: led
+    tags: gi 
+  l_gi_6:
+    number: 1-0-5
+    subtype: led
+    tags: gi 
+  l_gi_7:
+    number: 1-0-6
+    subtype: led
+    tags: gi 
+  l_gi_8:
+    number: 1-0-7
+    subtype: led
+    tags: gi 
+  l_gi_9:
+    number: 1-0-8
+    subtype: led
+    tags: gi 
+  l_gi_10:
+    number: 1-0-9
+    subtype: led
+    tags: gi 
+  l_gi_11:
+    number: 1-0-10
+    subtype: led
+    tags: gi 
+  l_gi_12:
+    number: 1-0-11
+    subtype: led
+    tags: gi 
+  l_gi_13:
+    number: 1-0-12
+    subtype: led
+    tags: gi 
+  l_gi_14:
+    number: 1-0-13
+    subtype: led
+    tags: gi 
+  l_gi_15:
+    number: 1-0-14
+    subtype: led
+    tags: gi 
+  l_gi_16:
+    number: 1-0-15
+    subtype: led
+    tags: gi 
+  l_gi_17:
+    number: 1-0-16
+    subtype: led
+    tags: gi 
+  l_gi_18:
+    number: 1-0-17
+    subtype: led
+    tags: gi 
+  l_gi_19:
+    number: 1-0-18
+    subtype: led
+    tags: gi 
+  l_gi_20:
+    number: 1-0-19
+    subtype: led
+    tags: gi 
+  l_gi_21:
+    number: 1-0-20
+    subtype: led
+    tags: gi 
+  l_gi_22:
+    number: 1-0-21
+    subtype: led
+    tags: gi 
+  l_gi_23:
+    number: 1-0-22
+    subtype: led
+    tags: gi 
+  l_gi_24:
+    number: 1-0-23
+    subtype: led
+    tags: gi 
+  l_gi_25:
+    number: 1-0-24
+    subtype: led
+    tags: gi 
+
+
+
+keyboard:   #use to drive your game from the computer for testing
+  z:
+    switch: s_left_flipper
+  "/":
+    switch: s_right_flipper
+  x:
+    switch: s_p2left_flipper
+  m:
+    switch: s_p2right_flipper
+  s: 
+    switch: s_startButton
+  p: 
+    switch: s_left_plunger_lane
