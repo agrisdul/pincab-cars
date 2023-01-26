@@ -1,0 +1,30 @@
+#show_version=5
+
+- duration: 1
+  lights:
+    l_gi_1: red
+    l_gi_2: lime
+    l_gi_3: blue
+    l_gi_4: ff
+    l_gi_5: yellow
+    l_gi_6: red
+    l_gi_7: ff
+    l_gi_8: blue
+    l_gi_9: ff
+    l_gi_10: ff
+    l_gi_11: ff
+    l_gi_12: green
+- duration: 1
+  lights:
+    l_gi_1: lime
+    l_gi_2: blue
+    l_gi_3: ff
+    l_gi_4: yellow
+    l_gi_5: red
+    l_gi_6: ff
+    l_gi_7: blue
+    l_gi_8: ff
+    l_gi_9: green
+    l_gi_10: ff
+    l_gi_11: ff
+    l_gi_12: red

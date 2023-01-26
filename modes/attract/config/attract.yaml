@@ -1,0 +1,19 @@
+#config_version=5
+
+show_player:
+  mode_attract_started: 
+    attract_display_loop:
+      speed: 1
+    attract_light_show:
+      speed: 4
+    attract_drop_show:
+      speed: 1
+
+sound_player:
+  mode_attract_started:
+    menu:
+      action: play
+      loops: -1
+  mode_attract_stopped:
+    menu:
+      action: stop

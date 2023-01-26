@@ -1,0 +1,45 @@
+#config_version=5
+
+mode: 
+  start_events: ball_started 
+  priority: 100
+
+slide_player:
+  mode_base_started:
+    widgets:
+      - type: text
+        text: (score)
+        number_grouping: true
+        min_digits: 2
+        font_size: 100
+      - type: text
+        text: PLAYER (number)
+        y: 10
+        x: 10
+        font_size: 50
+        anchor_x: left
+        anchor_y: bottom
+      - type: text
+        text: BALL (ball)
+        y: 10
+        x: right-10
+        anchor_x: right
+        anchor_y: bottom
+        font_size: 50
+
+ball_saves:
+  ball_save_ball_save:
+    active_time: 10s
+    hurry_up_time: 3s
+    timer_start_events: balldevice_bd_plunger_ejecting_ball
+    auto_launch: true
+    balls_to_save: 1
+
+
+variable_player:
+  s_drop_back1_active:
+    score: 100
+  s_drop_middle1_active:
+    score: 100
+  s_drop_front1_active:
+    score: 100

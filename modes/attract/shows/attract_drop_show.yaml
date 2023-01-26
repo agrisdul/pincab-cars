@@ -1,0 +1,12 @@
+#show_version=5
+
+- duration: 1
+  lights:
+    l_gi_23: ff
+    l_gi_24: lime
+    l_gi_25: blue
+- duration: 1
+  lights:
+    l_gi_23: lime
+    l_gi_24: yellow
+    l_gi_25: ff
