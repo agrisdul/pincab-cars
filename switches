@@ -1,0 +1,10 @@
+//Create Spreadsheet
+spreadsheetObj = SpreadsheetNew('Names');
+//Add Header Row
+SpreadSheetAddRow(spreadsheetObj,'ID,Name');
+//Add Data
+SpreadSheetAddRow(spreadsheetObj,'1,Simon');
+SpreadSheetAddRow(spreadsheetObj,'2,Carl');
+//Format Header
+SpreadsheetformatRow(spreadsheetobj,{bold=true,alignment='center'},1);
+//Add Sheet
