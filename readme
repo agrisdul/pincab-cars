@@ -1,2 +1,47 @@
-Readme, te
 
+Switches
+
+| J3 Port  | Description | 
+| ------------- | ------------- | 
+| 3-0-16 | Jump switch   |
+| 3-0-17 | target K3     | 
+| 3-0-18 | target K2     |
+| 3-0-19 | target K1     |
+| 3-0-20 | rollover-L1   |
+| 3-0-21 | rollover-L2   |
+| 3-0-23 | back-rollover |
+
+| J1 Port  | Description |
+| ------------- | ------------- |
+| 3-0-24 | target L1     |
+| 3-0-25 | kicker_switch |
+| 3-0-26 | Drop-target 3 |
+| 3-0-27 | Drop-target 2 |
+| 3-0-28 | Drop-target 1 |
+| 3-0-29 | Drop_target 3 |
+| 3-0-30 | Drop_target 1 |
+| 3-0-31 | Drop_target 2 |
+
+
+Coils
+
+| J6 Port  | Description | 
+| ------------- | ------------- | 
+| 3-0-0  | empty           |
+| 3-0-7  | empty           | 
+|  12V   | Cup droptarget  |
+| 3-0-6  | Ho;e kicker     |
+| 3-0-5  | side+droptarget |
+| 3-0-4  | kickback        | 
+| 3-0-3  | Cup+droptarget  |
+| 3-0-2  | Rampa           |
+| 3-0-1  | empty           |
+
+
+Power: 
+
+| CPU3  | Power | 
+| ------------- | ------------- | 
+| J4 | 12-50v           |
+| J7 | 5V led           | 
+| J5 | Neopixel/led     |
